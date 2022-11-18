@@ -1,0 +1,25 @@
+import React from "react";
+
+const FormInput = ({
+	name,
+	onChange,
+	type = "text",
+	value,
+	placeholder,
+	styles,
+}) => {
+	return (
+		<>
+			<input
+				name={name}
+				type={type}
+				placeholder={placeholder}
+				value={value}
+				onChange={onChange}
+				className={`${styles} w-full border-2 border-secondary-700 rounded-lg h-10 pl-2 font-medium outline-none py-1`}
+			/>
+		</>
+	);
+};
+
+export default FormInput;

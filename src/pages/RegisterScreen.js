@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { registerUser } from "../redux/services/authServices";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { SET_LOGIN, SET_NAME } from "../redux/features/auth/authSlice";
+import { SAVE_USER, SET_LOGIN } from "../redux/features/auth/authSlice";
 import FormInput from "../components/atoms/FormInput";
 import FormButton from "../components/atoms/FormButton";
 
@@ -68,8 +68,10 @@ const RegisterScreen = () => {
 
 			console.log(data);
 			await dispatch(SET_LOGIN(true));
-			await dispatch(SET_NAME(data.name));
+			// await dispatch(SET_NAME(data.name));
+			await dispatch(SAVE_USER(data));
 			setIsLoading(false);
+			toast.success("Registered successfully");
 			navigate("/dashboard");
 		} catch (error) {
 			setIsLoading(false);

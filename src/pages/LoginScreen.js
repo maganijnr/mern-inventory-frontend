@@ -5,7 +5,7 @@ import FormButton from "../components/atoms/FormButton";
 import FormInput from "../components/atoms/FormInput";
 import WebLayout from "../components/layout/WebLayout";
 import { toast } from "react-toastify";
-import { SET_LOGIN, SET_NAME } from "../redux/features/auth/authSlice";
+import { SAVE_USER, SET_LOGIN } from "../redux/features/auth/authSlice";
 import { loginUser } from "../redux/services/authServices";
 
 const initialState = {
@@ -59,8 +59,9 @@ const LoginScreen = () => {
 
 			console.log(data);
 			await dispatch(SET_LOGIN(true));
-			await dispatch(SET_NAME(data.name));
+			await dispatch(SAVE_USER(data));
 			setIsLoading(false);
+			toast.success("Logged in successfully");
 			navigate("/dashboard");
 		} catch (error) {
 			setIsLoading(false);

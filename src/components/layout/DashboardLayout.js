@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "../organisms/Sidebar";
 import { FaBars } from "react-icons/fa";
@@ -6,11 +6,35 @@ import FormInput from "../atoms/FormInput";
 import FormButton from "../atoms/FormButton";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import PageLoading from "../molecules/PageLoading";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { LOGOUT_USER } from "../../redux/features/auth/authSlice";
 
 const DashboardLayout = ({ loading, children }) => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const [search, setSearch] = useState("");
 	const [isProfileOpen, setIsProfileOpen] = useState(false);
+	const auth = useSelector((state) => state.auth);
+	const { user } = auth;
+
+	const logoutUser = async () => {
+		try {
+			dispatch(LOGOUT_USER());
+			navigate("/login");
+		} catch (error) {
+			console.log(error);
+		}
+		console.log("Log out");
+	};
+
+	useEffect(() => {
+		if (!user) {
+			navigate("/login");
+		}
+	}, [user]);
+
 	return (
 		<div className="flex">
 			{loading && <PageLoading />}
@@ -48,6 +72,9 @@ const DashboardLayout = ({ loading, children }) => {
 					</div>
 
 					<div className="relative flex items-center space-x-2">
+						<h2 className="font-semibold hidden lg:block text-xl">
+							{user.name}
+						</h2>
 						<img
 							className="w-10 h-10 rounded-full object-cover"
 							src="https://cdn.pocket-lint.com/r/s/970x/assets/images/155378-phones-review-hands-on-samsung-galaxy-s21-ultra-image1-luae09ici4.JPG"
@@ -67,7 +94,7 @@ const DashboardLayout = ({ loading, children }) => {
 						{isProfileOpen && (
 							<div className="bg-secondary-600 text-white px-1 rounded-md absolute top-11 right-0 space-y-1 py-2 w-[100px] flex flex-col duration-500 ease-linear">
 								<button>Profile</button>
-								<button>Logout</button>
+								<button onClick={logoutUser}>Logout</button>
 							</div>
 						)}
 					</div>

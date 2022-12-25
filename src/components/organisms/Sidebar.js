@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
+import { AiFillHome, AiOutlineUpload } from "react-icons/ai";
+import { FaUsers } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 
 const Sidebar = () => {
 	return (
@@ -28,7 +30,7 @@ const Sidebar = () => {
 							: "font-bold flex items-center space-x-2 h-10 text-white w-full max-w-[200px] mx-auto px-5 rounded-2xl"
 					}
 				>
-					<AiFillHome fontSize={20} className="mr-4" />
+					<FaUsers fontSize={20} className="mr-4" />
 					Users
 				</NavLink>
 				<NavLink
@@ -39,7 +41,7 @@ const Sidebar = () => {
 							: "font-bold flex items-center space-x-2 h-10 text-white w-full max-w-[200px] mx-auto px-5 rounded-2xl"
 					}
 				>
-					<AiFillHome fontSize={20} className="mr-4" />
+					<AiOutlineUpload fontSize={20} className="mr-4" />
 					Upload Product
 				</NavLink>
 				<NavLink
@@ -50,7 +52,7 @@ const Sidebar = () => {
 							: "font-bold flex items-center space-x-2 h-10 text-white w-full max-w-[200px] mx-auto px-5 rounded-2xl"
 					}
 				>
-					<AiFillHome fontSize={20} className="mr-4" />
+					<CgProfile fontSize={20} className="mr-4" />
 					Profile
 				</NavLink>
 			</div>

@@ -72,7 +72,7 @@ const RegisterScreen = () => {
 			await dispatch(SAVE_USER(data));
 			setIsLoading(false);
 			toast.success("Registered successfully");
-			navigate("/dashboard");
+			navigate("/");
 		} catch (error) {
 			setIsLoading(false);
 		}

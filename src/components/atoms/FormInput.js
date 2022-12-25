@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 const FormInput = ({
 	name,
@@ -10,7 +11,7 @@ const FormInput = ({
 }) => {
 	return (
 		<>
-			<input
+			<Input
 				name={name}
 				type={type}
 				placeholder={placeholder}
@@ -21,5 +22,7 @@ const FormInput = ({
 		</>
 	);
 };
+
+const Input = styled.input``;
 
 export default FormInput;

@@ -4,13 +4,15 @@ const savedUser = JSON.parse(localStorage.getItem("eubondUser"));
 
 const initialState = {
 	isLoggedIn: false,
+	name: savedUser ? savedUser.name : "",
 	user: {
-		name: "",
-		email: "",
-		photo: "",
-		bio: "",
+		name: savedUser ? savedUser.name : "",
+		email: savedUser ? savedUser.email : "",
+		photo: savedUser ? savedUser.photo : "",
+		bio: savedUser ? savedUser.bio : "",
+		token: savedUser ? savedUser.token : "",
+		userId: savedUser ? savedUser._id : "",
 	},
-	userId: "",
 };
 
 const authSlice = createSlice({
@@ -20,6 +22,9 @@ const authSlice = createSlice({
 		SET_LOGIN(state, action) {
 			state.isLoggedIn = action.payload;
 		},
+		SET_NAME(state, action) {
+			state.name = action.payload;
+		},
 		SAVE_USER(state, action) {
 			localStorage.setItem("eubondUser", JSON.stringify(action.payload));
 			const profile = action.payload;
@@ -27,7 +32,8 @@ const authSlice = createSlice({
 			state.user.email = profile.email;
 			state.user.photo = profile.photo;
 			state.user.bio = profile.bio;
-			state.userId = profile._id;
+			state.user.userId = profile._id;
+			state.user.token = profile.token;
 		},
 	},
 });

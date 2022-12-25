@@ -56,13 +56,11 @@ const LoginScreen = () => {
 		setIsLoading(true);
 		try {
 			const data = await loginUser(userData);
-
-			console.log(data);
 			await dispatch(SET_LOGIN(true));
 			await dispatch(SAVE_USER(data));
 			setIsLoading(false);
 			toast.success("Logged in successfully");
-			navigate("/dashboard");
+			navigate("/");
 		} catch (error) {
 			setIsLoading(false);
 		}

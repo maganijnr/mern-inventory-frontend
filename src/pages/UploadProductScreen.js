@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import FormButton from "../components/atoms/FormButton";
 import FormInput from "../components/atoms/FormInput";
@@ -11,6 +12,33 @@ const UploadProductScreen = () => {
 	const [description, setDescription] = useState("");
 	const [category, setCategory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	const [uploading, setUploading] = useState(false);
+
+	const uploadFileHandler = async (e) => {
+		const file = e.target.files[0];
+
+		const formData = new FormData();
+		formData.append("image", file);
+		setUploading(true);
+
+		try {
+			const config = {
+				headers: { "Content-Type": "multipart/form-data" },
+			};
+			const data = await axios.post(
+				`${process.env.REACT_APP_BACKEND_URL}/api/uploads`,
+				formData,
+				config
+			);
+			setImage(data);
+			setUploading(false);
+		} catch (error) {
+			console.log(error);
+			setUploading(false);
+		}
+	};
+
+	console.log(image);
 
 	return (
 		<DashboardLayout>
@@ -46,6 +74,25 @@ const UploadProductScreen = () => {
 							onChange={(e) => setPrice(e.target.value)}
 							type="number"
 						/>
+					</div>
+					<div className="max-w-md mx-auto">
+						<label
+							htmlFor="price"
+							className="font-medium text-lg text-secondary-600"
+						>
+							Product Image
+						</label>
+						<div>
+							<input
+								type="file"
+								value={image}
+								onChange={uploadFileHandler}
+								className="w-full border-2 border-secondary-700 rounded-lg h-10 pl-2 font-medium outline-none py-1"
+							/>
+						</div>
+						{!uploading && image && (
+							<img src={image} alt={"product"} className="w-40 h-40" />
+						)}
 					</div>
 					<div className="max-w-md mx-auto">
 						<label

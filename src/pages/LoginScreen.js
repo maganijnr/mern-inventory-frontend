@@ -56,7 +56,6 @@ const LoginScreen = () => {
 		setIsLoading(true);
 		try {
 			const data = await loginUser(userData);
-			await dispatch(SET_LOGIN(true));
 			await dispatch(SAVE_USER(data));
 			setIsLoading(false);
 			toast.success("Logged in successfully");

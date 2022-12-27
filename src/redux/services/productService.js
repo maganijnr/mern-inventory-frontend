@@ -40,4 +40,31 @@ const deleteProduct = async (id) => {
 	}
 };
 
-export { getAllProducts, deleteProduct };
+const createProduct = async (product) => {
+	try {
+		const config = {
+			headers: { "Content-Type": "application/json" },
+		};
+		const { data } = await axios.post(
+			`${process.env.REACT_APP_BACKEND_URL}/api/products/`,
+			product,
+			config
+		);
+
+		if (data) {
+			toast.success("Product created successfully");
+			return data;
+		}
+	} catch (error) {
+		const msg =
+			(error.response &&
+				error.response.data &&
+				error.response.data.message) ||
+			error.message ||
+			error.toString();
+
+		toast.error(msg);
+	}
+};
+
+export { getAllProducts, deleteProduct, createProduct };

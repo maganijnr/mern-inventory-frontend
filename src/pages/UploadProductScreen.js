@@ -1,8 +1,9 @@
-import axios from "axios";
 import React, { useState } from "react";
 import FormButton from "../components/atoms/FormButton";
 import FormInput from "../components/atoms/FormInput";
 import DashboardLayout from "../components/layout/DashboardLayout";
+import { toast } from "react-toastify";
+import { createProduct } from "../redux/services/productService";
 
 const UploadProductScreen = () => {
 	const [name, setName] = useState("");
@@ -12,37 +13,54 @@ const UploadProductScreen = () => {
 	const [description, setDescription] = useState("");
 	const [category, setCategory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const [uploading, setUploading] = useState(false);
 
-	const uploadFileHandler = async (e) => {
-		const file = e.target.files[0];
+	const handleProductUpload = async (e) => {
+		e.preventDefault();
 
-		const formData = new FormData();
-		formData.append("image", file);
-		setUploading(true);
+		if (
+			!name ||
+			!image ||
+			!countInStock ||
+			!price ||
+			!description ||
+			!category
+		) {
+			return toast.error("All fields are required");
+		}
 
+		const newProduct = {
+			name,
+			price,
+			description,
+			countInStock,
+			category,
+			image,
+		};
+
+		setIsLoading(true);
 		try {
-			const config = {
-				headers: { "Content-Type": "multipart/form-data" },
-			};
-			const data = await axios.post(
-				`${process.env.REACT_APP_BACKEND_URL}/api/uploads`,
-				formData,
-				config
-			);
-			setImage(data);
-			setUploading(false);
+			const data = await createProduct(newProduct);
+
+			if (data) {
+				setCategory("");
+				setName("");
+				setCountInStock(0);
+				setPrice(0);
+				setDescription("");
+				setImage("");
+				setIsLoading(false);
+			}
 		} catch (error) {
-			console.log(error);
-			setUploading(false);
+			setIsLoading(false);
 		}
 	};
 
-	console.log(image);
-
 	return (
 		<DashboardLayout>
-			<section className="w-full bg-white mt-5 rounded-lg p-5">
+			<form
+				className="w-full bg-white mt-5 rounded-lg p-5"
+				onSubmit={handleProductUpload}
+			>
 				<h2 className="text-xl md:text-2xl xl:text-3xl font-semibold text-secondary-600">
 					Upload Product
 				</h2>
@@ -77,22 +95,31 @@ const UploadProductScreen = () => {
 					</div>
 					<div className="max-w-md mx-auto">
 						<label
-							htmlFor="price"
+							htmlFor="image"
 							className="font-medium text-lg text-secondary-600"
 						>
-							Product Image
+							Product Image Url
 						</label>
-						<div>
-							<input
-								type="file"
-								value={image}
-								onChange={uploadFileHandler}
-								className="w-full border-2 border-secondary-700 rounded-lg h-10 pl-2 font-medium outline-none py-1"
-							/>
-						</div>
-						{!uploading && image && (
-							<img src={image} alt={"product"} className="w-40 h-40" />
-						)}
+						<FormInput
+							name="image"
+							value={image}
+							onChange={(e) => setImage(e.target.value)}
+							type="text"
+						/>
+					</div>
+					<div className="max-w-md mx-auto">
+						<label
+							htmlFor="category"
+							className="font-medium text-lg text-secondary-600"
+						>
+							Product Category
+						</label>
+						<FormInput
+							name="category"
+							value={category}
+							onChange={(e) => setCategory(e.target.value)}
+							type="text"
+						/>
 					</div>
 					<div className="max-w-md mx-auto">
 						<label
@@ -133,7 +160,7 @@ const UploadProductScreen = () => {
 						/>
 					</div>
 				</div>
-			</section>
+			</form>
 		</DashboardLayout>
 	);
 };
